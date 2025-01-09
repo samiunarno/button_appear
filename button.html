@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Professional Card</title>
+  <title>Rollup Cards</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,48 +16,60 @@
       background-color: #f4f4f9;
     }
 
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+      max-width: 1200px;
+    }
+
     .card {
       position: relative;
-      width: 300px;
-      height: 400px;
+      width: 250px;
+      height: 300px;
       background: #fff;
       box-shadow: 0 4px 8px rgba(10, 0, 0, 0.1);
-      border-radius: 40px;
+      border-radius: 20px;
       overflow: hidden;
       transition: transform 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .card:hover {
       transform: translateY(-10px);
     }
 
-    .profile-image {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin: 20px auto 10px;
-      display: block;
-      border: 4px solid #00ffff;
-    }
-
     .card-content {
-      padding: 10px 20px;
+      padding: 20px;
       text-align: center;
     }
 
-    .name {
-      margin: 10px 0 5px;
-      font-size: 1.5rem;
-      color: #333;
+    .card img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 20px auto;
     }
 
-    .designation {
+    .title {
+      margin: 10px 0 5px;
+      font-size: 1.2rem;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .price {
       font-size: 1rem;
       color: #777;
+      margin-bottom: 15px;
     }
 
-    .card .button {
+    .button {
       display: none;
       position: absolute;
       bottom: 20px;
@@ -65,15 +77,16 @@
       transform: translateX(-50%);
       padding: 10px 20px;
       background: linear-gradient(45deg, red, rgb(0, 225, 255));
-      box-shadow: #333;
       color: #fff;
       border: none;
-      border-radius: 40px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background 1.5s ease-in-out;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      transition: background 0.5s ease-in-out;
     }
 
-    .card .button:hover {
+    .button:hover {
       background: linear-gradient(45deg, red, blue, red);
     }
 
@@ -84,15 +97,47 @@
 </head>
 
 <body>
-  <div class="card">
-    <img src="https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg"
-      alt="Profile Picture" class="profile-image">
-    <div class="card-content">
-      <h2 class="name">NAME</h2>
-      <p class="designation">WHEN HOVER BUTTON APPEAR</p>
-    </div>
-    <button class="button">Contact</button>
-  </div>
+  <div class="card-container" id="card-container"></div>
+
+  <script>
+    // Data for the cards
+    const cardsData = [
+      { title: "NAME", price: "53,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "63,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "63,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "85,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "45,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "52,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "75,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "49,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "29,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "70,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "90,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "145,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "35,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "40,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "40,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" },
+      { title: "NAME", price: "50,00 € HT", imageUrl: "https://www.shutterstock.com/image-vector/man-shirt-tie-businessman-avatar-600nw-548848999.jpg" }
+    ];
+
+    // Select the card container
+    const cardContainer = document.getElementById("card-container");
+
+    // Generate cards dynamically
+    cardsData.forEach(card => {
+      const cardElement = document.createElement("div");
+      cardElement.className = "card";
+      cardElement.innerHTML = `
+        <div class="card-content">
+          <img src="${card.imageUrl}" alt="Rollup Image">
+          <h2 class="title">${card.title}</h2>
+          <p class="price">${card.price}</p>
+          <button class="button">En savoir plus</button>
+        </div>
+      `;
+      cardContainer.appendChild(cardElement);
+    });
+  </script>
 </body>
 
 </html>
